@@ -95,10 +95,12 @@ CREATE TABLE file (
     "version" integer
 );
 
-CREATE TABLE history_payment (
+-- New
+CREATE TABLE event_payment_history (
     id varchar(36),
-    history_payment_code varchar(36),
+    event_payment_code varchar(36),
     user_id varchar(36),
+    event_header_id varchar(36),
     trx_no text,
     created_at timestamp,
     created_by varchar(36),
@@ -107,6 +109,52 @@ CREATE TABLE history_payment (
     is_active boolean,
     "version" integer
 );
+
+-- Old
+--CREATE TABLE history_payment (
+--    id varchar(36),
+--    history_payment_code varchar(36),
+--    user_id varchar(36),
+--    trx_no text,
+--    created_at timestamp,
+--    created_by varchar(36),
+--    updated_at timestamp,
+--    updated_by varchar(36),
+--    is_active boolean,
+--    "version" integer
+--);
+
+
+-- New
+CREATE TABLE premium_payment_history (
+    id varchar(36),
+    premium_payment_history_code varchar(36),
+    user_id varchar(36),
+    premium_type_id varchar(36),
+    trx_no text,
+    created_at timestamp,
+    created_by varchar(36),
+    updated_at timestamp,
+    updated_by varchar(36),
+    is_active boolean,
+    "version" integer
+);
+
+
+-- New
+CREATE TABLE premium_type (
+    id varchar(36),
+    premium_type_code varchar(36),
+	price varchar(36),
+	duration integer,
+    created_at timestamp,
+    created_by varchar(36),
+    updated_at timestamp,
+    updated_by varchar(36),
+    is_active boolean,
+    "version" integer
+);
+
 
 CREATE TABLE payment (
     id varchar(36),
@@ -325,14 +373,38 @@ ALTER TABLE file
 ALTER TABLE file
     ADD CONSTRAINT file_pk PRIMARY KEY (id);
 
+-- Old
+--ALTER TABLE history_payment
+--    ADD CONSTRAINT history_payment_bk UNIQUE (history_payment_code);
+--
+-- Old
+--ALTER TABLE history_payment
+--    ADD CONSTRAINT history_payment_pk PRIMARY KEY (id);
+   
+   
+-- New
+ALTER TABLE event_payment_history
+	ADD CONSTRAINT event_payment_history_bk UNIQUE (event_payment_code);
 
-ALTER TABLE history_payment
-    ADD CONSTRAINT history_payment_bk UNIQUE (history_payment_code);
+-- New
+ALTER TABLE event_payment_history
+	ADD CONSTRAINT event_payment_history_pk PRIMARY KEY(id);
 
+-- New
+ALTER TABLE premium_payment_history
+	ADD CONSTRAINT premium_payment_history_bk UNIQUE (premium_payment_history_code);
 
-ALTER TABLE history_payment
-    ADD CONSTRAINT history_payment_pk PRIMARY KEY (id);
+-- New
+ALTER TABLE premium_payment_history
+	ADD CONSTRAINT premium_payment_history_pk PRIMARY KEY(id);
 
+-- New
+ALTER TABLE premium_type
+	ADD CONSTRAINT premium_type_bk UNIQUE(premium_type_code);
+
+-- New
+ALTER TABLE premium_type
+	ADD CONSTRAINT premium_type_pk PRIMARY KEY(id);
 
 ALTER TABLE payment
     ADD CONSTRAINT payment_bk UNIQUE (payment_code);
@@ -441,9 +513,27 @@ ALTER TABLE thread_details
 ALTER TABLE event_detail
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
+-- Old
+--ALTER TABLE history_payment
+--    ADD CONSTRAINT history_fk FOREIGN KEY (user_id) REFERENCES users(id);
+   
+   
+-- New
+ALTER TABLE event_payment_history
+	ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
 
-ALTER TABLE history_payment
-    ADD CONSTRAINT history_fk FOREIGN KEY (user_id) REFERENCES users(id);
+-- New
+ALTER TABLE event_payment_history
+	ADD CONSTRAINT event_header_fk FOREIGN KEY(event_header_id) REFERENCES event_header(id);
+
+-- New
+ALTER TABLE premium_payment_history
+	ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
+
+-- New
+ALTER TABLE premium_payment_history
+	ADD CONSTRAINT premium_type_fk FOREIGN KEY(user_id) REFERENCES premium_type(id);
+   
 
 ALTER TABLE payment
     ADD CONSTRAINT payment_fk FOREIGN KEY (file_id) REFERENCES file(id);
