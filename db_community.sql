@@ -113,6 +113,7 @@ CREATE TABLE payment (
     payment_code varchar(36),
     file_id varchar(36),
     user_id varchar(36),
+    status varchar(36),
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
@@ -491,3 +492,5 @@ ALTER TABLE payment
 
 ALTER TABLE users
     ADD CONSTRAINT verification_fk FOREIGN KEY (verification_id) REFERENCES verification(id);
+
+
