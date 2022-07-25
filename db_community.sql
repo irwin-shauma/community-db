@@ -95,7 +95,7 @@ CREATE TABLE file (
     "version" integer
 );
 
--- New
+
 CREATE TABLE event_payment_history (
     id varchar(36),
     event_payment_code varchar(36),
@@ -110,22 +110,7 @@ CREATE TABLE event_payment_history (
     "version" integer
 );
 
--- Old
---CREATE TABLE history_payment (
---    id varchar(36),
---    history_payment_code varchar(36),
---    user_id varchar(36),
---    trx_no text,
---    created_at timestamp,
---    created_by varchar(36),
---    updated_at timestamp,
---    updated_by varchar(36),
---    is_active boolean,
---    "version" integer
---);
 
-
--- New
 CREATE TABLE premium_payment_history (
     id varchar(36),
     premium_payment_history_code varchar(36),
@@ -141,7 +126,6 @@ CREATE TABLE premium_payment_history (
 );
 
 
--- New
 CREATE TABLE premium_type (
     id varchar(36),
     premium_type_code varchar(36),
@@ -177,9 +161,18 @@ CREATE TABLE profile (
     company text,
     industry text,
     positions text,
-    status text,
-    status_duration timestamp,
-    user_id varchar(36),
+
+    -- >>> old
+    -- status text,
+    -- status_duration timestamp,
+
+    -- >>> new
+    premium_payment_history_id varchar(36),
+
+
+    -- >>> old
+    -- user_id varchar(36),
+
     file_id varchar(36),
     created_by varchar(36),
     created_at timestamp,
@@ -301,6 +294,9 @@ CREATE TABLE users (
     passwords text,
     role_id varchar(36),
     verification_id varchar(36),
+
+    -- >>> new
+    profile_id varchar(36),
     created_by varchar(36),
     created_at timestamp,
     updated_by varchar(36),
@@ -320,6 +316,21 @@ CREATE TABLE verification (
     is_active boolean,
     "version" integer
 );
+
+-- >>> new
+CREATE TABLE tokens (
+    id varchar(36),
+    refresh_token text,
+    expiredDate timestamp,
+    created_by varchar(36),
+    created_at timestamp,
+    updated_by varchar(36),
+    updated_at timestamp,
+    is_active boolean,
+    "version" integer
+)
+
+
 
 ALTER TABLE article_header
     ADD CONSTRAINT article_header_bk UNIQUE (article_header_code);
@@ -373,36 +384,22 @@ ALTER TABLE file
 ALTER TABLE file
     ADD CONSTRAINT file_pk PRIMARY KEY (id);
 
--- Old
---ALTER TABLE history_payment
---    ADD CONSTRAINT history_payment_bk UNIQUE (history_payment_code);
---
--- Old
---ALTER TABLE history_payment
---    ADD CONSTRAINT history_payment_pk PRIMARY KEY (id);
-   
-   
--- New
+
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT event_payment_history_bk UNIQUE (event_payment_code);
 
--- New
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT event_payment_history_pk PRIMARY KEY(id);
 
--- New
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT premium_payment_history_bk UNIQUE (premium_payment_history_code);
 
--- New
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT premium_payment_history_pk PRIMARY KEY(id);
 
--- New
 ALTER TABLE premium_type
 	ADD CONSTRAINT premium_type_bk UNIQUE(premium_type_code);
 
--- New
 ALTER TABLE premium_type
 	ADD CONSTRAINT premium_type_pk PRIMARY KEY(id);
 
@@ -512,25 +509,16 @@ ALTER TABLE thread_details
 
 ALTER TABLE event_detail
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
-
--- Old
---ALTER TABLE history_payment
---    ADD CONSTRAINT history_fk FOREIGN KEY (user_id) REFERENCES users(id);
    
-   
--- New
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
 
--- New
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT event_header_fk FOREIGN KEY(event_header_id) REFERENCES event_header(id);
 
--- New
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
 
--- New
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT premium_type_fk FOREIGN KEY(user_id) REFERENCES premium_type(id);
    
@@ -562,8 +550,9 @@ ALTER TABLE thread_polling_answer
 ALTER TABLE thread_headers
     ADD CONSTRAINT thread_type_fk FOREIGN KEY (thread_type_id) REFERENCES thread_types(id);
 
-ALTER TABLE profile
-    ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
+-- >>> old
+-- ALTER TABLE profile
+--     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE bookmark
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
@@ -576,12 +565,18 @@ ALTER TABLE thread_polling_answer
 ALTER TABLE thread_details
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
-
 ALTER TABLE payment
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE users
     ADD CONSTRAINT verification_fk FOREIGN KEY (verification_id) REFERENCES verification(id);
+
+-- >>> New
+ALTER TABLE users
+    ADD CONSTRAINT profile_fk FOREIGN KEY (profile_id) REFERENCES profile(id);
+-- >>> New
+ALTER TABLE profile
+    ADD CONSTRAINT premium_payment_history_fk FOREIGN KEY (premium_payment_history_id) REFERENCES premium_payment_history(id);
 
    
 -- Generating uuid
@@ -613,8 +608,6 @@ VALUES
     (uuid_generate_v4(), uuid_generate_v4(), 'user2', 'user2', '10b9b0bb-c6aa-444b-9ea1-5362b9c14bca', null, null, now(), null, now(), true, 0),
     (uuid_generate_v4(), uuid_generate_v4(), 'user3', 'user3', 'db30715b-1a03-43dc-a274-616c55422f0b', null, null, now(), null, now(), true, 0),
     (uuid_generate_v4(), uuid_generate_v4(), 'user4', 'user4', '5ba4cb43-c61d-4b3b-9b8d-48d7c49a028f', null, null, now(), null, now(), true, 0);
-
-   
    
 -- Testing query here
 SELECT COUNT(id) FROM roles;
@@ -622,6 +615,5 @@ SELECT COUNT(id) FROM roles;
 INSERT INTO verification(id, verification_code, expired, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
 (uuid_generate_v4(), '12345', now(), null, now(), null, now(), true, 0);
-
 
 SELECT u.id, u.email, u.role_id FROM users u INNER JOIN roles r ON u.role_id = r.id WHERE email = 'adnim';
