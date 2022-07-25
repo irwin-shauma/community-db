@@ -608,10 +608,10 @@ VALUES
    
 INSERT INTO users (id, user_code, email, passwords, role_id, verification_id, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
-    (uuid_generate_v4(), uuid_generate_v4(), 'admin', 'admin', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', null, null, now(), null, now(), true, 0);
-    (uuid_generate_v4(), uuid_generate_v4(), 'user1', 'user1', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', null, null, now(), null, now(), true, 0);
-    (uuid_generate_v4(), uuid_generate_v4(), 'user2', 'user2', '10b9b0bb-c6aa-444b-9ea1-5362b9c14bca', null, null, now(), null, now(), true, 0);
-    (uuid_generate_v4(), uuid_generate_v4(), 'user3', 'user3', 'db30715b-1a03-43dc-a274-616c55422f0b', null, null, now(), null, now(), true, 0);
+    (uuid_generate_v4(), uuid_generate_v4(), 'admin', 'admin', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', null, null, now(), null, now(), true, 0),
+    (uuid_generate_v4(), uuid_generate_v4(), 'user1', 'user1', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', null, null, now(), null, now(), true, 0),
+    (uuid_generate_v4(), uuid_generate_v4(), 'user2', 'user2', '10b9b0bb-c6aa-444b-9ea1-5362b9c14bca', null, null, now(), null, now(), true, 0),
+    (uuid_generate_v4(), uuid_generate_v4(), 'user3', 'user3', 'db30715b-1a03-43dc-a274-616c55422f0b', null, null, now(), null, now(), true, 0),
     (uuid_generate_v4(), uuid_generate_v4(), 'user4', 'user4', '5ba4cb43-c61d-4b3b-9b8d-48d7c49a028f', null, null, now(), null, now(), true, 0);
 
    
