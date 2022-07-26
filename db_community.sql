@@ -297,6 +297,8 @@ CREATE TABLE users (
 
     -- >>> new
     profile_id varchar(36),
+    -- >>> new
+    token_id varchar(36),
     created_by varchar(36),
     created_at timestamp,
     updated_by varchar(36),
@@ -481,6 +483,10 @@ ALTER TABLE users
 
 ALTER TABLE users
     ADD CONSTRAINT user_pk PRIMARY KEY (id);
+   
+-- >>> New
+ALTER TABLE tokens
+    ADD CONSTRAINT token_pk PRIMARY KEY (id);
 
 ALTER TABLE verification
     ADD CONSTRAINT verification_code_bk UNIQUE (verification_code);
@@ -574,6 +580,11 @@ ALTER TABLE users
 -- >>> New
 ALTER TABLE users
     ADD CONSTRAINT profile_fk FOREIGN KEY (profile_id) REFERENCES profile(id);
+   
+-- >>> New
+ALTER TABLE users
+    ADD CONSTRAINT token_fk FOREIGN KEY (token_id) REFERENCES tokens(id);
+   
 -- >>> New
 ALTER TABLE profile
     ADD CONSTRAINT premium_payment_history_fk FOREIGN KEY (premium_payment_history_id) REFERENCES premium_payment_history(id);
@@ -617,3 +628,12 @@ VALUES
 (uuid_generate_v4(), '12345', now(), null, now(), null, now(), true, 0);
 
 SELECT u.id, u.email, u.role_id FROM users u INNER JOIN roles r ON u.role_id = r.id WHERE email = 'adnim';
+
+
+
+-- add column
+ALTER TABLE users ADD token_id varchar(36) NULL;
+-- add constraint fk
+
+
+
