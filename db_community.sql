@@ -44,9 +44,16 @@ CREATE TABLE event_detail (
     event_header_id varchar(36),
     file_id varchar(36),
     price float,
-    dates date,
-    starts time,
-    ends time,
+    
+    -- New
+    startDate timestamp,
+    endDate timestamp,
+    
+    --Old
+--    dates date,
+--    starts time,
+--    ends time,
+    
     provider text,
     locations text,
     created_at timestamp,
@@ -161,18 +168,7 @@ CREATE TABLE profile (
     company text,
     industry text,
     positions text,
-
-    -- >>> old
-    -- status text,
-    -- status_duration timestamp,
-
-    -- >>> new
     premium_payment_history_id varchar(36),
-
-
-    -- >>> old
-    -- user_id varchar(36),
-
     file_id varchar(36),
     created_by varchar(36),
     created_at timestamp,
@@ -295,9 +291,7 @@ CREATE TABLE users (
     role_id varchar(36),
     verification_id varchar(36),
 
-    -- >>> new
     profile_id varchar(36),
-    -- >>> new
     token_id varchar(36),
     created_by varchar(36),
     created_at timestamp,
@@ -319,7 +313,6 @@ CREATE TABLE verification (
     "version" integer
 );
 
--- >>> new
 CREATE TABLE tokens (
     id varchar(36),
     refresh_token text,
@@ -484,7 +477,6 @@ ALTER TABLE users
 ALTER TABLE users
     ADD CONSTRAINT user_pk PRIMARY KEY (id);
    
--- >>> New
 ALTER TABLE tokens
     ADD CONSTRAINT token_pk PRIMARY KEY (id);
 
@@ -497,10 +489,6 @@ ALTER TABLE verification
 ALTER TABLE balance
     ADD CONSTRAINT balance_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
-
-ALTER TABLE event_detail
-    ADD CONSTRAINT event_header_fk FOREIGN KEY (event_header_id) REFERENCES event_header(id);
-
 ALTER TABLE event_header
     ADD CONSTRAINT event_type_fk FOREIGN KEY (event_type_id) REFERENCES event_type(id);
 
@@ -512,7 +500,9 @@ ALTER TABLE article_header
 ALTER TABLE thread_details
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
-
+ALTER TABLE event_detail
+    ADD CONSTRAINT event_header_fk FOREIGN KEY (event_header_id) REFERENCES event_header(id);
+   
 ALTER TABLE event_detail
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
    
@@ -556,9 +546,6 @@ ALTER TABLE thread_polling_answer
 ALTER TABLE thread_headers
     ADD CONSTRAINT thread_type_fk FOREIGN KEY (thread_type_id) REFERENCES thread_types(id);
 
--- >>> old
--- ALTER TABLE profile
---     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE bookmark
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
@@ -577,15 +564,12 @@ ALTER TABLE payment
 ALTER TABLE users
     ADD CONSTRAINT verification_fk FOREIGN KEY (verification_id) REFERENCES verification(id);
 
--- >>> New
 ALTER TABLE users
     ADD CONSTRAINT profile_fk FOREIGN KEY (profile_id) REFERENCES profile(id);
    
--- >>> New
 ALTER TABLE users
     ADD CONSTRAINT token_fk FOREIGN KEY (token_id) REFERENCES tokens(id);
    
--- >>> New
 ALTER TABLE profile
     ADD CONSTRAINT premium_payment_history_fk FOREIGN KEY (premium_payment_history_id) REFERENCES premium_payment_history(id);
 
@@ -634,6 +618,8 @@ SELECT u.id, u.email, u.role_id FROM users u INNER JOIN roles r ON u.role_id = r
 -- add column
 ALTER TABLE users ADD token_id varchar(36) NULL;
 -- add constraint fk
+
+SELECT * FROM profile;
 
 
 
