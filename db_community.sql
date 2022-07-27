@@ -46,8 +46,8 @@ CREATE TABLE event_detail (
     price float,
     
     -- New
-    startDate timestamp,
-    endDate timestamp,
+    start_date timestamp,
+    end_date timestamp,
     
     --Old
 --    dates date,
