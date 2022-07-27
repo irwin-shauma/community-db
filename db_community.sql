@@ -42,18 +42,9 @@ CREATE TABLE event_detail (
     id varchar(36),
     event_detail_code varchar(36),
     event_header_id varchar(36),
-    file_id varchar(36),
     price float,
-    
-    -- New
     start_date timestamp,
     end_date timestamp,
-    
-    --Old
---    dates date,
---    starts time,
---    ends time,
-    
     provider text,
     locations text,
     created_at timestamp,
@@ -68,6 +59,7 @@ CREATE TABLE event_header (
     id varchar(36),
     event_header_code varchar(36),
     event_type_id varchar(36),
+    file_id varchar(36),
     title text,
     created_at timestamp,
     created_by varchar(36),
@@ -492,19 +484,17 @@ ALTER TABLE balance
 ALTER TABLE event_header
     ADD CONSTRAINT event_type_fk FOREIGN KEY (event_type_id) REFERENCES event_type(id);
 
+ALTER TABLE event_header
+    ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
 ALTER TABLE article_header
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
-
 
 ALTER TABLE thread_details
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
 ALTER TABLE event_detail
     ADD CONSTRAINT event_header_fk FOREIGN KEY (event_header_id) REFERENCES event_header(id);
-   
-ALTER TABLE event_detail
-    ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
    
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
