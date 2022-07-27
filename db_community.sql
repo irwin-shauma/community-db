@@ -205,7 +205,7 @@ CREATE TABLE thread_details (
     created_by varchar(36),
     updated_at timestamp,
     updated_by varchar(36),
-    isactive boolean,
+    is_active boolean,
     "version" integer
 );
 
@@ -218,7 +218,7 @@ CREATE TABLE thread_header_polling (
     created_by varchar(36),
     updated_at timestamp,
     updated_by varchar(36),
-    isactive boolean,
+    is_active boolean,
     "version" integer
 );
 
@@ -232,7 +232,7 @@ CREATE TABLE thread_headers (
     created_by varchar(36),
     updated_at timestamp,
     updated_by varchar(36),
-    isactive boolean,
+    is_active boolean,
     "version" integer
 );
 
@@ -271,7 +271,7 @@ CREATE TABLE thread_polling_detail (
     created_by varchar(36),
     updated_at timestamp,
     updated_by varchar(36),
-    isactive boolean,
+    is_active boolean,
     "version" integer
 );
 
@@ -283,7 +283,7 @@ CREATE TABLE thread_types (
     created_by varchar(36),
     updated_at timestamp,
     updated_by varchar(36),
-    isactive boolean,
+    is_active boolean,
     "version" integer
 );
 
@@ -323,7 +323,7 @@ CREATE TABLE verification (
 CREATE TABLE tokens (
     id varchar(36),
     refresh_token text,
-    expiredDate timestamp,
+    expired_date timestamp,
     created_by varchar(36),
     created_at timestamp,
     updated_by varchar(36),
