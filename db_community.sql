@@ -240,7 +240,7 @@ CREATE TABLE thread_like (
 CREATE TABLE thread_polling_answer (
     id varchar(36),
     thread_polling_answer_code varchar(36),
-    thread_polling_id varchar(36),
+    thread_detail_polling_id varchar(36),
     user_id varchar(36),
     created_at timestamp,
     created_by varchar(36),
@@ -530,8 +530,8 @@ ALTER TABLE thread_polling_detail
 ALTER TABLE thread_like
     ADD CONSTRAINT thread_like_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
-ALTER TABLE thread_polling_answer
-    ADD CONSTRAINT thread_polling_fk FOREIGN KEY (thread_polling_id) REFERENCES thread_header_polling(id);
+
+ALTER TABLE thread_polling_answer ADD CONSTRAINT thread_polling_answer_fk FOREIGN KEY (thread_detail_polling_id) REFERENCES thread_polling_detail(id);
 
 ALTER TABLE thread_headers
     ADD CONSTRAINT thread_type_fk FOREIGN KEY (thread_type_id) REFERENCES thread_types(id);
@@ -603,13 +603,6 @@ VALUES
 
 SELECT u.id, u.email, u.role_id FROM users u INNER JOIN roles r ON u.role_id = r.id WHERE email = 'adnim';
 
-
-
--- add column
-ALTER TABLE users ADD token_id varchar(36) NULL;
--- add constraint fk
-
-SELECT * FROM profile;
 
 
 
