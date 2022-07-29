@@ -97,7 +97,7 @@ CREATE TABLE file (
 
 CREATE TABLE event_payment_history (
     id varchar(36),
-    event_payment_code varchar(36),
+    event_payment_history_code varchar(36),
     user_id varchar(36),
     event_header_id varchar(36),
     trx_no text,
@@ -197,11 +197,12 @@ CREATE TABLE thread_details (
     "version" integer
 );
 
-CREATE TABLE thread_header_polling (
+CREATE TABLE thread_polling_header (
     id varchar(36),
-    thread_header_polling_code varchar(36),
+    thread_polling_header_code varchar(36),
     title_polling text,
     content_polling text,
+    polling_question text,
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
@@ -253,8 +254,8 @@ CREATE TABLE thread_polling_answer (
 CREATE TABLE thread_polling_detail (
     id varchar(36),
     thread_polling_detail_code varchar(36),
-    thread_header_polling_id varchar(36),
-    question text,
+    thread_polling_header_id varchar(36),
+    polling_choice text,
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
@@ -373,7 +374,7 @@ ALTER TABLE file
 
 
 ALTER TABLE event_payment_history
-	ADD CONSTRAINT event_payment_history_bk UNIQUE (event_payment_code);
+	ADD CONSTRAINT event_payment_history_bk UNIQUE (event_payment_history_code);
 
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT event_payment_history_pk PRIMARY KEY(id);
@@ -421,6 +422,7 @@ ALTER TABLE thread_details
     ADD CONSTRAINT thread_detail_pk PRIMARY KEY (id);
 
 
+   
 ALTER TABLE thread_headers
     ADD CONSTRAINT thread_header_bk UNIQUE (thread_header_code);
 
@@ -428,12 +430,12 @@ ALTER TABLE thread_headers
     ADD CONSTRAINT thread_header_pk PRIMARY KEY (id);
 
 
-ALTER TABLE thread_header_polling
-    ADD CONSTRAINT thread_header_polling_code_bk UNIQUE (thread_header_polling_code);
+ALTER TABLE thread_polling_header
+    ADD CONSTRAINT thread_polling_header_bk UNIQUE (thread_polling_header_code);
 
 
-ALTER TABLE thread_header_polling
-    ADD CONSTRAINT thread_header_polling_pk PRIMARY KEY (id);
+ALTER TABLE thread_polling_header
+    ADD CONSTRAINT thread_polling_header_pk PRIMARY KEY (id);
 
 ALTER TABLE thread_like
     ADD CONSTRAINT thread_like_bk UNIQUE (thread_like_code);
@@ -477,6 +479,8 @@ ALTER TABLE verification
 
 ALTER TABLE verification
     ADD CONSTRAINT verification_pk PRIMARY KEY (id);
+   
+-- FK
 	
 ALTER TABLE balance
     ADD CONSTRAINT balance_fk FOREIGN KEY (user_id) REFERENCES users(id);
@@ -506,8 +510,9 @@ ALTER TABLE premium_payment_history
 	ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
 
 ALTER TABLE premium_payment_history
-	ADD CONSTRAINT premium_type_fk FOREIGN KEY(user_id) REFERENCES premium_type(id);
+	ADD CONSTRAINT premium_type_fk FOREIGN KEY(premium_type_id) REFERENCES premium_type(id);
    
+
 
 ALTER TABLE payment
     ADD CONSTRAINT payment_fk FOREIGN KEY (file_id) REFERENCES file(id);
@@ -525,13 +530,13 @@ ALTER TABLE thread_like
     ADD CONSTRAINT thread_fk FOREIGN KEY (thread_id) REFERENCES thread_headers(id);
 
 ALTER TABLE thread_polling_detail
-    ADD CONSTRAINT thread_header_polling_fk FOREIGN KEY (thread_header_polling_id) REFERENCES thread_header_polling(id);
+    ADD CONSTRAINT thread_polling_header_fk FOREIGN KEY (thread_polling_header_id) REFERENCES thread_polling_header(id);
 
 ALTER TABLE thread_like
     ADD CONSTRAINT thread_like_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE thread_polling_answer
-    ADD CONSTRAINT thread_polling_fk FOREIGN KEY (thread_polling_id) REFERENCES thread_header_polling(id);
+    ADD CONSTRAINT thread_polling_fk FOREIGN KEY (thread_polling_id) REFERENCES thread_polling_header(id);
 
 ALTER TABLE thread_headers
     ADD CONSTRAINT thread_type_fk FOREIGN KEY (thread_type_id) REFERENCES thread_types(id);
