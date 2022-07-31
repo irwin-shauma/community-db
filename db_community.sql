@@ -61,6 +61,10 @@ CREATE TABLE event_header (
     event_type_id varchar(36),
     file_id varchar(36),
     title text,
+    
+    --New
+    user_id varchar(36),
+
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
@@ -215,6 +219,10 @@ CREATE TABLE thread_headers (
     id varchar(36),
     thread_header_code varchar(36),
     title text,
+    
+    --New
+    user_id varchar(36),
+
     thread_type_id varchar(36),
     content_thread text,
     created_at timestamp,
@@ -491,6 +499,10 @@ ALTER TABLE event_header
 ALTER TABLE event_header
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
+--New
+ALTER TABLE event_header
+    ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
+
 ALTER TABLE article_header
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
@@ -537,8 +549,13 @@ ALTER TABLE thread_like
 
 ALTER TABLE thread_polling_answer ADD CONSTRAINT thread_polling_answer_fk FOREIGN KEY (thread_detail_polling_id) REFERENCES thread_polling_detail(id);
 
+
 ALTER TABLE thread_headers
     ADD CONSTRAINT thread_type_fk FOREIGN KEY (thread_type_id) REFERENCES thread_types(id);
+
+--New
+ALTER TABLE thread_headers
+    ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 
 ALTER TABLE bookmark
