@@ -99,7 +99,6 @@ CREATE TABLE file (
 CREATE TABLE event_payment_history (
     id varchar(36),
     event_payment_history_code varchar(36),
-    -- New
     payment_id varchar(36),
     user_id varchar(36),
     event_header_id varchar(36),
@@ -116,7 +115,6 @@ CREATE TABLE event_payment_history (
 CREATE TABLE premium_payment_history (
     id varchar(36),
     premium_payment_history_code varchar(36),
-    -- New
     payment_id varchar(36),
     user_id varchar(36),
     premium_type_id varchar(36),
@@ -299,7 +297,10 @@ CREATE TABLE users (
     id varchar(36),
     users_code varchar(36),
     role_id varchar(36),
-    verification_id varchar(36),
+
+    -- Deleted
+    -- verification_id varchar(36),
+
     profile_id varchar(36),
     token_id varchar(36),
     email text,
@@ -312,17 +313,18 @@ CREATE TABLE users (
     "version" integer
 );
 
-CREATE TABLE verification (
-    id varchar(36),
-    verification_code text,
-    expired timestamp,
-    created_by varchar(36),
-    created_at timestamp,
-    updated_by varchar(36),
-    updated_at timestamp,
-    is_active boolean,
-    "version" integer
-);
+-- Deleted
+-- CREATE TABLE verification (
+--     id varchar(36),
+--     verification_code text,
+--     expired timestamp,
+--     created_by varchar(36),
+--     created_at timestamp,
+--     updated_by varchar(36),
+--     updated_at timestamp,
+--     is_active boolean,
+--     "version" integer
+-- );
 
 CREATE TABLE tokens (
     id varchar(36),
@@ -498,11 +500,13 @@ ALTER TABLE users
 ALTER TABLE tokens
     ADD CONSTRAINT token_pk PRIMARY KEY (id);
 
-ALTER TABLE verification
-    ADD CONSTRAINT verification_code_bk UNIQUE (verification_code);
 
-ALTER TABLE verification
-    ADD CONSTRAINT verification_pk PRIMARY KEY (id);
+-- Deleted 
+-- ALTER TABLE verification
+--     ADD CONSTRAINT verification_code_bk UNIQUE (verification_code);
+
+-- ALTER TABLE verification
+--     ADD CONSTRAINT verification_pk PRIMARY KEY (id);
    
 -- FK
 	
@@ -544,7 +548,6 @@ ALTER TABLE premium_payment_history
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT premium_type_fk FOREIGN KEY(premium_type_id) REFERENCES premium_type(id);
 
--- New
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT payment_fk FOREIGN KEY(payment_id) REFERENCES payment(id);
 
@@ -554,7 +557,6 @@ ALTER TABLE payment
 ALTER TABLE users
     ADD CONSTRAINT role_fk FOREIGN KEY (role_id) REFERENCES roles(id);
 
--- New
 ALTER TABLE profile
 	ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
@@ -575,11 +577,9 @@ ALTER TABLE thread_like
 
 ALTER TABLE thread_polling_answer ADD CONSTRAINT thread_polling_answer_fk FOREIGN KEY (thread_detail_polling_id) REFERENCES thread_polling_detail(id);
 
--- New
 ALTER TABLE thread_polling_like
     ADD CONSTRAINT thread_polling_header_fk FOREIGN KEY (thread_polling_header_id) REFERENCES thread_polling_header(id);
 
--- New
 ALTER TABLE thread_polling_like
     ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
 
@@ -589,14 +589,11 @@ ALTER TABLE thread_headers
 ALTER TABLE thread_headers
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
-
 ALTER TABLE bookmark
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
-
 ALTER TABLE thread_polling_answer
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
-
 
 ALTER TABLE thread_details
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
@@ -604,8 +601,9 @@ ALTER TABLE thread_details
 ALTER TABLE payment
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
-ALTER TABLE users
-    ADD CONSTRAINT verification_fk FOREIGN KEY (verification_id) REFERENCES verification(id);
+-- Deleted
+-- ALTER TABLE users
+--     ADD CONSTRAINT verification_fk FOREIGN KEY (verification_id) REFERENCES verification(id);
 
 ALTER TABLE users
     ADD CONSTRAINT profile_fk FOREIGN KEY (profile_id) REFERENCES profile(id);
@@ -621,7 +619,6 @@ ALTER TABLE profile
    
 -- Generating uuid
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 
 -- The id and code should be generated using uuid_generate_v4(), for the sake of simplicity, id will be hardcoded. 
 
@@ -651,7 +648,6 @@ VALUES
    
 
 	
-INSERT INTO 
    
 -- Testing query here
 SELECT COUNT(id) FROM roles;
