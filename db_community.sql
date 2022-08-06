@@ -30,10 +30,10 @@ CREATE TABLE bookmark (
     bookmark_code varchar(36),
     user_id varchar(36),
     thread_id varchar(36),
-    created_by varchar(36),
     created_at timestamp,
-    updated_by varchar(36),
+    created_by varchar(36),
     updated_at timestamp,
+    updated_by varchar(36),
     is_active boolean,
     "version" integer
 );
@@ -61,10 +61,7 @@ CREATE TABLE event_header (
     event_type_id varchar(36),
     file_id varchar(36),
     title text,
-    
-    --New
     user_id varchar(36),
-
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
@@ -102,6 +99,8 @@ CREATE TABLE file (
 CREATE TABLE event_payment_history (
     id varchar(36),
     event_payment_history_code varchar(36),
+    -- New
+    payment_id varchar(36),
     user_id varchar(36),
     event_header_id varchar(36),
     trx_no text,
@@ -117,6 +116,8 @@ CREATE TABLE event_payment_history (
 CREATE TABLE premium_payment_history (
     id varchar(36),
     premium_payment_history_code varchar(36),
+    -- New
+    payment_id varchar(36),
     user_id varchar(36),
     premium_type_id varchar(36),
     trx_no text,
@@ -160,16 +161,16 @@ CREATE TABLE payment (
 CREATE TABLE profile (
     id varchar(36),
     profile_code varchar(36),
+    premium_payment_history_id varchar(36),
+    file_id varchar(36),
     full_name text,
     company text,
     industry text,
     positions text,
-    premium_payment_history_id varchar(36),
-    file_id varchar(36),
-    created_by varchar(36),
     created_at timestamp,
-    updated_by varchar(36),
+    created_by varchar(36),
     updated_at timestamp,
+    updated_by varchar(36),
     is_active boolean,
     "version" integer
 );
@@ -178,10 +179,10 @@ CREATE TABLE roles (
     id varchar(36),
     role_code varchar(36),
     role_name text,
-    created_by varchar(36),
     created_at timestamp,
-    updated_by varchar(36),
+    created_by varchar(36),
     updated_at timestamp,
+    updated_by varchar(36),
     is_active boolean,
     "version" integer
 );
@@ -218,11 +219,9 @@ CREATE TABLE thread_polling_header (
 CREATE TABLE thread_headers (
     id varchar(36),
     thread_header_code varchar(36),
-    title text,
-    
-    user_id varchar(36),
-
     thread_type_id varchar(36),
+    user_id varchar(36),
+    title text,
     content_thread text,
     created_at timestamp,
     created_by varchar(36),
@@ -245,7 +244,6 @@ CREATE TABLE thread_like (
     "version" integer
 );
 
--- New
 CREATE TABLE thread_polling_like (
     id varchar(36),
     thread_polling_like_code varchar(36),
@@ -287,7 +285,7 @@ CREATE TABLE thread_polling_detail (
 
 CREATE TABLE thread_types (
     id varchar(36),
-    type_code varchar(36),
+    thread_types_code varchar(36),
     thread_type text,
     created_at timestamp,
     created_by varchar(36),
@@ -299,18 +297,17 @@ CREATE TABLE thread_types (
 
 CREATE TABLE users (
     id varchar(36),
-    user_code varchar(36),
-    email text,
-    passwords text,
+    users_code varchar(36),
     role_id varchar(36),
     verification_id varchar(36),
-
     profile_id varchar(36),
     token_id varchar(36),
-    created_by varchar(36),
+    email text,
+    passwords text,
     created_at timestamp,
-    updated_by varchar(36),
+    created_by varchar(36),
     updated_at timestamp,
+    updated_by varchar(36),
     is_active boolean,
     "version" integer
 );
@@ -337,7 +334,7 @@ CREATE TABLE tokens (
     updated_at timestamp,
     is_active boolean,
     "version" integer
-)
+);
 
 
 
@@ -465,11 +462,9 @@ ALTER TABLE thread_like
 ALTER TABLE thread_like
     ADD CONSTRAINT thread_like_pk PRIMARY KEY (id);
 
--- New
 ALTER TABLE thread_polling_like
     ADD CONSTRAINT thread_polling_like_bk UNIQUE (thread_polling_like_code);
 
--- New
 ALTER TABLE thread_polling_like
     ADD CONSTRAINT thread_polling_like_pk PRIMARY KEY(id);
 
@@ -520,7 +515,7 @@ ALTER TABLE event_header
 ALTER TABLE event_header
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
---New
+
 ALTER TABLE event_header
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
@@ -539,19 +534,29 @@ ALTER TABLE event_payment_history
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT event_header_fk FOREIGN KEY(event_header_id) REFERENCES event_header(id);
 
+-- New
+AlTER TABLE event_payment_history
+	ADD CONSTRAINT payment_fk FOREIGN KEY(payment_id) REFERENCES payment(id);
+
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT user_fk FOREIGN KEY(user_id) REFERENCES users(id);
 
 ALTER TABLE premium_payment_history
 	ADD CONSTRAINT premium_type_fk FOREIGN KEY(premium_type_id) REFERENCES premium_type(id);
-   
 
+-- New
+ALTER TABLE premium_payment_history
+	ADD CONSTRAINT payment_fk FOREIGN KEY(payment_id) REFERENCES payment(id);
 
 ALTER TABLE payment
     ADD CONSTRAINT payment_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
 ALTER TABLE users
     ADD CONSTRAINT role_fk FOREIGN KEY (role_id) REFERENCES roles(id);
+
+-- New
+ALTER TABLE profile
+	ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
 ALTER TABLE thread_details
     ADD CONSTRAINT thread_details_fk FOREIGN KEY (thread_header_id) REFERENCES thread_headers(id);
@@ -569,7 +574,6 @@ ALTER TABLE thread_like
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE thread_polling_answer ADD CONSTRAINT thread_polling_answer_fk FOREIGN KEY (thread_detail_polling_id) REFERENCES thread_polling_detail(id);
-
 
 -- New
 ALTER TABLE thread_polling_like
@@ -612,6 +616,8 @@ ALTER TABLE users
 ALTER TABLE profile
     ADD CONSTRAINT premium_payment_history_fk FOREIGN KEY (premium_payment_history_id) REFERENCES premium_payment_history(id);
 
+
+
    
 -- Generating uuid
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -630,22 +636,17 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 INSERT INTO roles (id, role_code, role_name, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
     ('dbbda007-34bd-4c68-bfca-4bc97881fef2', 'SYSTEM', 'System', null, now(), null, now(), true, 0),
-    ('35a2b727-6c8a-4448-a14a-3d15c5c1beef', 'ROLE2', 'Role 2', null, now(), null, now(), true, 0),
-    ('10b9b0bb-c6aa-444b-9ea1-5362b9c14bca', 'ROLE3', 'Role 3', null, now(), null, now(), true, 0),
-    ('db30715b-1a03-43dc-a274-616c55422f0b', 'ROLE4', 'Role 4', null, now(), null, now(), true, 0),
-    ('5ba4cb43-c61d-4b3b-9b8d-48d7c49a028f', 'ROLE5', 'Role 5', null, now(), null, now(), true, 0);
+    ('35a2b727-6c8a-4448-a14a-3d15c5c1beef', 'MEMBER', 'Member', null, now(), null, now(), true, 0);
    
 INSERT INTO profile (id, profile_code, full_name, company, industry, positions, premium_payment_history_id, file_id, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
-	('3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a', uuid_generate_v4(), 'Admin', 'Lawencon', 'IT', 'Manager', null, null, null, now(), null, now(), true, 0);
+	('3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a', uuid_generate_v4(), 'Admin', 'Lawencon', 'IT', 'Manager', null, null, null, now(), null, now(), true, 0),
+	('343acb24-084d-40a3-9bf5-4ee9fdce7e77', uuid_generate_v4(), 'Member', 'Lawencon', 'IT', 'Karyawan', null, null, null, now(), null, now(), true, 0);
    
 INSERT INTO users (id, user_code, email, passwords, role_id, verification_id, profile_id, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
     (uuid_generate_v4(), uuid_generate_v4(), 'admin', '$2a$10$pN0DCKfxFrcTgdbiPc62SOtycNH1Hd7qRmLMACR7j9JANR8AR8OKy', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', null, '3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a'  ,null, now(), null, now(), true, 0),
-    (uuid_generate_v4(), uuid_generate_v4(), 'user1', 'user1', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', null, null, null, now(), null, now(), true, 0),
-    (uuid_generate_v4(), uuid_generate_v4(), 'user2', 'user2', '10b9b0bb-c6aa-444b-9ea1-5362b9c14bca', null, null, null, now(), null, now(), true, 0),
-    (uuid_generate_v4(), uuid_generate_v4(), 'user3', 'user3', 'db30715b-1a03-43dc-a274-616c55422f0b', null, null, null, now(), null, now(), true, 0),
-    (uuid_generate_v4(), uuid_generate_v4(), 'user4', 'user4', '5ba4cb43-c61d-4b3b-9b8d-48d7c49a028f', null, null, null, now(), null, now(), true, 0);
+    (uuid_generate_v4(), uuid_generate_v4(), 'member', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', null, '343acb24-084d-40a3-9bf5-4ee9fdce7e77', null, now(), null, now(), true, 0);
    
    
 
