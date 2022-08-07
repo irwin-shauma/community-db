@@ -486,13 +486,17 @@ ALTER TABLE thread_polling_detail
     ADD CONSTRAINT thread_polling_detail_pk PRIMARY KEY (id);
 
 ALTER TABLE thread_types
-    ADD CONSTRAINT thread_type_bk UNIQUE (type_code);
+    ADD CONSTRAINT thread_type_bk UNIQUE (thread_types_code);
 
 ALTER TABLE thread_types
     ADD CONSTRAINT thread_type_pk PRIMARY KEY (id);
 
 ALTER TABLE users
-    ADD CONSTRAINT user_code_bk UNIQUE (user_code);
+    ADD CONSTRAINT user_code_bk UNIQUE (users_code);
+
+-- New 
+ALTER TABLE users
+    ADD CONSTRAINT user_email_bk UNIQUE(email);
 
 ALTER TABLE users
     ADD CONSTRAINT user_pk PRIMARY KEY (id);
@@ -640,11 +644,16 @@ VALUES
 	('3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a', uuid_generate_v4(), 'Admin', 'Lawencon', 'IT', 'Manager', null, null, null, now(), null, now(), true, 0),
 	('343acb24-084d-40a3-9bf5-4ee9fdce7e77', uuid_generate_v4(), 'Member', 'Lawencon', 'IT', 'Karyawan', null, null, null, now(), null, now(), true, 0);
    
-INSERT INTO users (id, user_code, email, passwords, role_id, verification_id, profile_id, created_by, created_at, updated_by, updated_at, is_active, "version")
+INSERT INTO users (id, users_code, email, passwords, role_id, profile_id, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
-    (uuid_generate_v4(), uuid_generate_v4(), 'admin', '$2a$10$pN0DCKfxFrcTgdbiPc62SOtycNH1Hd7qRmLMACR7j9JANR8AR8OKy', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', null, '3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a'  ,null, now(), null, now(), true, 0),
-    (uuid_generate_v4(), uuid_generate_v4(), 'member', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', null, '343acb24-084d-40a3-9bf5-4ee9fdce7e77', null, now(), null, now(), true, 0);
-   
+    ('e61954ac-f866-4b67-8524-bec50bd23aa7', uuid_generate_v4(), 'admin', '$2a$10$pN0DCKfxFrcTgdbiPc62SOtycNH1Hd7qRmLMACR7j9JANR8AR8OKy', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', '3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a'  ,null, now(), null, now(), true, 0),
+    ('2c55391b-2c58-4beb-a97a-f8482991efb7', uuid_generate_v4(), 'member', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', '343acb24-084d-40a3-9bf5-4ee9fdce7e77', null, now(), null, now(), true, 0);
+
+INSERT INTO thread_types (id, thread_types_code, thread_type, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('52920899-71ae-4adf-83f9-46dac23a730a', uuid_generate_v4(), 'Regular', now(), 'e61954ac-f866-4b67-8524-bec50bd23aa7', null, null, true, 0),
+	('804a3c7a-d94a-4d8a-a30a-285b3c263e6d', uuid_generate_v4(), 'Premium', now(), 'e61954ac-f866-4b67-8524-bec50bd23aa7', null, null, true, 0);
+	
    
 
 	
