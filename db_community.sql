@@ -509,8 +509,9 @@ ALTER TABLE event_header
 ALTER TABLE article_header
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
-ALTER TABLE thread_details
-    ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
+	-- Deleted
+--ALTER TABLE thread_details
+--    ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
 ALTER TABLE event_detail
     ADD CONSTRAINT event_header_fk FOREIGN KEY (event_header_id) REFERENCES event_header(id);
@@ -572,6 +573,7 @@ ALTER TABLE thread_headers
 ALTER TABLE thread_headers
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
+-- new
 ALTER TABLE thread_headers
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
