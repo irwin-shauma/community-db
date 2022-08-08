@@ -189,7 +189,8 @@ CREATE TABLE thread_details (
     id varchar(36),
     thread_detail_code varchar(36),
     thread_header_id varchar(36),
-    file_id varchar(36),
+    -- Deleted
+    -- file_id varchar(36),
     user_id varchar(36),
     comment_thread text,
     created_at timestamp,
@@ -219,6 +220,7 @@ CREATE TABLE thread_headers (
     thread_header_code varchar(36),
     thread_type_id varchar(36),
     user_id varchar(36),
+    file_id varchar(36),
     title text,
     content_thread text,
     created_at timestamp,
@@ -253,7 +255,7 @@ CREATE TABLE thread_polling_like (
     updated_by varchar(36),
     is_active boolean,
     "version" integer
-)
+);
 
 CREATE TABLE thread_polling_answer (
     id varchar(36),
@@ -298,9 +300,6 @@ CREATE TABLE users (
     users_code varchar(36),
     role_id varchar(36),
 
-    -- Deleted
-    -- verification_id varchar(36),
-
     profile_id varchar(36),
     token_id varchar(36),
     email text,
@@ -313,18 +312,6 @@ CREATE TABLE users (
     "version" integer
 );
 
--- Deleted
--- CREATE TABLE verification (
---     id varchar(36),
---     verification_code text,
---     expired timestamp,
---     created_by varchar(36),
---     created_at timestamp,
---     updated_by varchar(36),
---     updated_at timestamp,
---     is_active boolean,
---     "version" integer
--- );
 
 CREATE TABLE tokens (
     id varchar(36),
@@ -504,14 +491,6 @@ ALTER TABLE users
 ALTER TABLE tokens
     ADD CONSTRAINT token_pk PRIMARY KEY (id);
 
-
--- Deleted 
--- ALTER TABLE verification
---     ADD CONSTRAINT verification_code_bk UNIQUE (verification_code);
-
--- ALTER TABLE verification
---     ADD CONSTRAINT verification_pk PRIMARY KEY (id);
-   
 -- FK
 	
 ALTER TABLE balance
@@ -593,6 +572,9 @@ ALTER TABLE thread_headers
 ALTER TABLE thread_headers
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
+ALTER TABLE thread_headers
+    ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
+
 ALTER TABLE bookmark
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
@@ -604,10 +586,6 @@ ALTER TABLE thread_details
 
 ALTER TABLE payment
     ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
-
--- Deleted
--- ALTER TABLE users
---     ADD CONSTRAINT verification_fk FOREIGN KEY (verification_id) REFERENCES verification(id);
 
 ALTER TABLE users
     ADD CONSTRAINT profile_fk FOREIGN KEY (profile_id) REFERENCES profile(id);
