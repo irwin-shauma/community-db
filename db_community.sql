@@ -147,7 +147,7 @@ CREATE TABLE payment (
     payment_code varchar(36),
     file_id varchar(36),
     user_id varchar(36),
-    status varchar(36),
+    is_approve varchar(36),
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
@@ -647,6 +647,7 @@ VALUES
 
 SELECT u.id, u.email, u.role_id FROM users u INNER JOIN roles r ON u.role_id = r.id WHERE email = 'adnim';
 
+SELECT COUNT(id) FROM users;
 
 
 
