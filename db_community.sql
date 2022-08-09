@@ -16,7 +16,7 @@ CREATE TABLE balance (
     id varchar(36),
     balance_code varchar(36),
     user_id varchar(36),
-    current_balance float,
+    current_balance double precision,
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
