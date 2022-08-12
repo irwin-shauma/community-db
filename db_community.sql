@@ -598,8 +598,6 @@ ALTER TABLE users
 ALTER TABLE profile
     ADD CONSTRAINT premium_payment_history_fk FOREIGN KEY (premium_payment_history_id) REFERENCES premium_payment_history(id);
 
-
-
    
 -- Generating uuid
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
@@ -617,22 +615,30 @@ CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 INSERT INTO roles (id, role_code, role_name, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
     ('dbbda007-34bd-4c68-bfca-4bc97881fef2', 'SYSTEM', 'System', null, now(), null, now(), true, 0),
+    ('acda187-34bd-4c68-bfca-4bc97881fee1', 'SUPERADMIN', 'System', null, now(), null, now(), true, 0),
     ('35a2b727-6c8a-4448-a14a-3d15c5c1beef', 'MEMBER', 'Member', null, now(), null, now(), true, 0);
    
 INSERT INTO profile (id, profile_code, full_name, company, industry, positions, premium_payment_history_id, file_id, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
-	('3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a', uuid_generate_v4(), 'Admin', 'Lawencon', 'IT', 'Manager', null, null, null, now(), null, now(), true, 0),
+	('3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a', uuid_generate_v4(), 'System', 'Lawencon', 'IT', 'System', null, null, null, now(), null, now(), true, 0),
+	('39b3b96b-084d-40a3-9bf5-4ee9fdce8f5b', uuid_generate_v4(), 'Admin', 'Lawencon', 'IT', 'Admin', null, null, null, now(), null, now(), true, 0),
 	('343acb24-084d-40a3-9bf5-4ee9fdce7e77', uuid_generate_v4(), 'Member', 'Lawencon', 'IT', 'Karyawan', null, null, null, now(), null, now(), true, 0);
    
 INSERT INTO users (id, users_code, email, passwords, role_id, profile_id, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
-    ('e61954ac-f866-4b67-8524-bec50bd23aa7', uuid_generate_v4(), 'admin', '$2a$10$pN0DCKfxFrcTgdbiPc62SOtycNH1Hd7qRmLMACR7j9JANR8AR8OKy', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', '3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a'  ,null, now(), null, now(), true, 0),
+    ('f72065bd-f866-4b67-8524-bec50bd23cc7', uuid_generate_v4(), 'system', '$2a$10$RTZ7b8VIo9EC9214sZVES.tY3GaEiupM3wELgoNMNvgwmN7L1cZ2K', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', '3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a'  ,null, now(), null, now(), true, 0),
+    ('e61954ac-f866-4b67-8524-bec50bd23aa7', uuid_generate_v4(), 'admin', '$2a$10$pN0DCKfxFrcTgdbiPc62SOtycNH1Hd7qRmLMACR7j9JANR8AR8OKy', 'acda187-34bd-4c68-bfca-4bc97881fee1', '39b3b96b-084d-40a3-9bf5-4ee9fdce8f5b'  ,null, now(), null, now(), true, 0),
     ('2c55391b-2c58-4beb-a97a-f8482991efb7', uuid_generate_v4(), 'member', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', '343acb24-084d-40a3-9bf5-4ee9fdce7e77', null, now(), null, now(), true, 0);
 
 INSERT INTO thread_types (id, thread_types_code, thread_type, created_at, created_by, updated_at, updated_by, is_active, "version")
 VALUES
 	('52920899-71ae-4adf-83f9-46dac23a730a', uuid_generate_v4(), 'Regular', now(), 'e61954ac-f866-4b67-8524-bec50bd23aa7', null, null, true, 0),
 	('804a3c7a-d94a-4d8a-a30a-285b3c263e6d', uuid_generate_v4(), 'Premium', now(), 'e61954ac-f866-4b67-8524-bec50bd23aa7', null, null, true, 0);
+
+INSERT INTO balance(id, balance_code, user_id, current_balance, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('62031900-71ae-4adf-83f9-46dac23a730a', uuid_generate_v4(), 'f72065bd-f866-4b67-8524-bec50bd23cc7', 0, now(), null, now(), null, true, 0),
+	('915B4C8B-d94a-4d8a-a30a-396C4D374F7E', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb7', 0, now(), null, now(), null, true, 0);
 	
    
 
