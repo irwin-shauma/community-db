@@ -622,28 +622,105 @@ INSERT INTO profile (id, profile_code, full_name, company, industry, positions, 
 VALUES
 	('3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a', uuid_generate_v4(), 'System', 'Lawencon', 'IT', 'System', null, null, null, now(), null, now(), true, 0),
 	('39b3b96b-084d-40a3-9bf5-4ee9fdce8f5b', uuid_generate_v4(), 'Admin', 'Lawencon', 'IT', 'Admin', null, null, null, now(), null, now(), true, 0),
-	('343acb24-084d-40a3-9bf5-4ee9fdce7e77', uuid_generate_v4(), 'Member', 'Lawencon', 'IT', 'Karyawan', null, null, null, now(), null, now(), true, 0);
+	('343acb24-084d-40a3-9bf5-4ee9fdce7e77', uuid_generate_v4(), 'Member', 'Lawencon', 'IT', 'Karyawan', null, null, null, now(), null, now(), true, 0),
+	('443acb24-084d-40a3-9bf5-4ee9fdce7e88', uuid_generate_v4(), 'Member', 'Lawencon', 'IT', 'Karyawan', null, null, null, now(), null, now(), true, 0),
+	('543acb24-084d-40a3-9bf5-4ee9fdce7e99', uuid_generate_v4(), 'Member', 'Lawencon', 'IT', 'Karyawan', null, null, null, now(), null, now(), true, 0);
    
 INSERT INTO users (id, users_code, email, passwords, role_id, profile_id, created_by, created_at, updated_by, updated_at, is_active, "version")
 VALUES
     ('f72065bd-f866-4b67-8524-bec50bd23cc7', uuid_generate_v4(), 'system', '$2a$10$RTZ7b8VIo9EC9214sZVES.tY3GaEiupM3wELgoNMNvgwmN7L1cZ2K', 'dbbda007-34bd-4c68-bfca-4bc97881fef2', '3ba2a85a-084d-40a3-9bf5-4ee9fdce7e4a'  ,null, now(), null, now(), true, 0),
     ('e61954ac-f866-4b67-8524-bec50bd23aa7', uuid_generate_v4(), 'admin', '$2a$10$pN0DCKfxFrcTgdbiPc62SOtycNH1Hd7qRmLMACR7j9JANR8AR8OKy', 'acda187-34bd-4c68-bfca-4bc97881fee1', '39b3b96b-084d-40a3-9bf5-4ee9fdce8f5b'  ,null, now(), null, now(), true, 0),
-    ('2c55391b-2c58-4beb-a97a-f8482991efb7', uuid_generate_v4(), 'member', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', '343acb24-084d-40a3-9bf5-4ee9fdce7e77', null, now(), null, now(), true, 0);
+    ('2c55391b-2c58-4beb-a97a-f8482991efb7', uuid_generate_v4(), 'member', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', '343acb24-084d-40a3-9bf5-4ee9fdce7e77', null, now(), null, now(), true, 0),
+    ('2c55391b-2c58-4beb-a97a-f8482991efb8', uuid_generate_v4(), 'member2', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', '443acb24-084d-40a3-9bf5-4ee9fdce7e88', null, now(), null, now(), true, 0),
+    ('2c55391b-2c58-4beb-a97a-f8482991efb9', uuid_generate_v4(), 'member3', '$2a$10$n.MxDi1fkcGXUoO7jiwJEundWIoYsyWhWzpEKZmkbPBpc9Zy2/gym', '35a2b727-6c8a-4448-a14a-3d15c5c1beef', '543acb24-084d-40a3-9bf5-4ee9fdce7e99', null, now(), null, now(), true, 0);
+
+
+
+INSERT INTO balance(id, balance_code, user_id, current_balance, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('62031900-71ae-4adf-83f9-46dac23a730a', uuid_generate_v4(), 'f72065bd-f866-4b67-8524-bec50bd23cc7', 0, now(), null, now(), null, true, 0),
+	('915B4C8B-d94a-4d8a-a30a-396C4D374F7E', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb7', 0, now(), null, now(), null, true, 0);
+
+INSERT INTO premium_type(id, premium_type_code, price, duration, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('9a36cd92-7a10-4855-ac51-4f4ebaf91614', uuid_generate_v4(), 100000, 3600, now(), null, now(), null, true, 0),
+	('b5678fcd-0d4b-43f1-9119-f01c36998ba8', uuid_generate_v4(), 200000, 7200, now(), null, now(), null, true, 0),
+	('122f81d0-11fd-41be-80bb-54a500ad7906', uuid_generate_v4(), 300000, 12800, now(), null, now(), null, true, 0);
 
 INSERT INTO thread_types (id, thread_types_code, thread_type, created_at, created_by, updated_at, updated_by, is_active, "version")
 VALUES
 	('52920899-71ae-4adf-83f9-46dac23a730a', uuid_generate_v4(), 'Regular', now(), 'e61954ac-f866-4b67-8524-bec50bd23aa7', null, null, true, 0),
 	('804a3c7a-d94a-4d8a-a30a-285b3c263e6d', uuid_generate_v4(), 'Premium', now(), 'e61954ac-f866-4b67-8524-bec50bd23aa7', null, null, true, 0);
 
-INSERT INTO balance(id, balance_code, user_id, current_balance, created_at, created_by, updated_at, updated_by, is_active, "version")
+INSERT INTO thread_headers(id, thread_header_code, thread_type_id, user_id, file_id, title, content_thread, created_at, created_by, updated_at, updated_by, is_active, "version")
 VALUES
-	('62031900-71ae-4adf-83f9-46dac23a730a', uuid_generate_v4(), 'f72065bd-f866-4b67-8524-bec50bd23cc7', 0, now(), null, now(), null, true, 0),
-	('915B4C8B-d94a-4d8a-a30a-396C4D374F7E', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb7', 0, now(), null, now(), null, true, 0);
+	('cc0acdca-de89-4086-ad92-492eeb02cdd2', uuid_generate_v4(), '52920899-71ae-4adf-83f9-46dac23a730a', '2c55391b-2c58-4beb-a97a-f8482991efb7', null, 'Dummy No 1', 'this is the dumy1', now(), null, now(), null, true, 0),
+	('516b8aca-ecab-4b60-8e1d-1290a927305e', uuid_generate_v4(), '52920899-71ae-4adf-83f9-46dac23a730a', '2c55391b-2c58-4beb-a97a-f8482991efb7', null, 'Dummy No 2', 'this is the dumy2', now(), null, now(), null, true, 0),
+	('2dd11b82-75dd-466f-b958-561454cb6061', uuid_generate_v4(), '52920899-71ae-4adf-83f9-46dac23a730a', '2c55391b-2c58-4beb-a97a-f8482991efb7', null, 'Dummy No 3', 'this is the dumy3', now(), null, now(), null, true, 0),
+	('bf50021c-b31c-42c3-bab0-9e0e1c24c2ef', uuid_generate_v4(), '52920899-71ae-4adf-83f9-46dac23a730a', '2c55391b-2c58-4beb-a97a-f8482991efb9', null, 'Dummy No 4', 'this is the dumy4', now(), null, now(), null, true, 0),
+	('29ae90c3-cf16-46a3-ae7b-b04117517cf1', uuid_generate_v4(), '52920899-71ae-4adf-83f9-46dac23a730a', '2c55391b-2c58-4beb-a97a-f8482991efb8', null, 'Dummy No 5', 'this is the dumy5', now(), null, now(), null, true, 0),
+	('dd3b6fa8-f33c-46f3-9985-c9c1f05bbe14', uuid_generate_v4(), '52920899-71ae-4adf-83f9-46dac23a730a', '2c55391b-2c58-4beb-a97a-f8482991efb8', null, 'Dummy No 6', 'this is the dumy6', now(), null, now(), null, true, 0),
+	('0d84b01a-65fa-4733-8b27-6bfbf597434a', uuid_generate_v4(), '804a3c7a-d94a-4d8a-a30a-285b3c263e6d', '2c55391b-2c58-4beb-a97a-f8482991efb9', null, 'Dummy No 7', 'this is the dumy7', now(), null, now(), null, true, 0),
+	('d47d709a-0f3c-409a-b123-32567657fb1d', uuid_generate_v4(), '804a3c7a-d94a-4d8a-a30a-285b3c263e6d', '2c55391b-2c58-4beb-a97a-f8482991efb9', null, 'Dummy No 8', 'this is the dumy8', now(), null, now(), null, true, 0);
 	
+INSERT INTO thread_details(id, thread_detail_code, thread_header_id, user_id, comment_thread, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('47694a1a-475c-466c-83db-ca4f235b419c', uuid_generate_v4(), 'cc0acdca-de89-4086-ad92-492eeb02cdd2', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment1', now(), null, now(), null, true, 0), 
+	('16b85d1b-c54f-46ec-85ef-473bc3f1da01', uuid_generate_v4(), 'cc0acdca-de89-4086-ad92-492eeb02cdd2', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment2', now(), null, now(), null, true, 0), 
+	('a3328ca3-3bd4-4ff2-9591-380975279fcc', uuid_generate_v4(), 'cc0acdca-de89-4086-ad92-492eeb02cdd2', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment3', now(), null, now(), null, true, 0), 
+	('8cd4250d-283f-4d4b-8ca4-3d41a51c0806', uuid_generate_v4(), '516b8aca-ecab-4b60-8e1d-1290a927305e', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment4', now(), null, now(), null, true, 0), 
+	('820a8443-33c5-4f5b-894e-f517d20da9ac', uuid_generate_v4(), '516b8aca-ecab-4b60-8e1d-1290a927305e', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment5', now(), null, now(), null, true, 0), 
+	('6450ece0-7f03-4102-b01b-329454ed75dc', uuid_generate_v4(), '29ae90c3-cf16-46a3-ae7b-b04117517cf1', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment6', now(), null, now(), null, true, 0), 
+	('c3b37c21-94b1-4d48-8646-79e5267cae48', uuid_generate_v4(), '0d84b01a-65fa-4733-8b27-6bfbf597434a', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment7', now(), null, now(), null, true, 0), 
+	('36de6029-0f43-491b-aff1-9fedde2fe78d', uuid_generate_v4(), '0d84b01a-65fa-4733-8b27-6bfbf597434a', '2c55391b-2c58-4beb-a97a-f8482991efb8', 'This is comment8', now(), null, now(), null, true, 0);
    
+INSERT INTO thread_like(id, thread_like_code, user_id, thread_id, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('7e670323-4709-480a-b7bb-2e03f76ca4f3', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb8', '516b8aca-ecab-4b60-8e1d-1290a927305e', now(), null, now(), null, true, 0),
+	('c1369322-f452-43c7-b625-3be6a8defca0', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb9', '516b8aca-ecab-4b60-8e1d-1290a927305e', now(), null, now(), null, true, 0),
+	('5f6456df-b7c6-404a-9fdf-fc6c986524e8', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb9', '2dd11b82-75dd-466f-b958-561454cb6061', now(), null, now(), null, true, 0),
+	('bb95dd76-a06e-4a98-9083-c6648b9a8a7a', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb9', 'dd3b6fa8-f33c-46f3-9985-c9c1f05bbe14', now(), null, now(), null, true, 0),
+	('3544fee8-7a50-4a60-aa36-355375f598a7', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb9', 'cc0acdca-de89-4086-ad92-492eeb02cdd2', now(), null, now(), null, true, 0);
+	
+INSERT INTO thread_polling_header(id, thread_polling_header_code, title_polling, content_polling, polling_question, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('f4885546-8a14-4ee6-97f0-7556af36ee30', uuid_generate_v4(), 'Title 1', 'This is content polling 1', 'What is this?', now(), null, now(), null, true, 0),
+	('6f7d8a30-5b56-40b5-b2fa-48cbf02f5c15', uuid_generate_v4(), 'Title 2', 'This is content polling 2', 'What is this?', now(), null, now(), null, true, 0),
+	('a2a50dc6-5e76-4b4b-a932-6856d8656aff', uuid_generate_v4(), 'Title 3', 'This is content polling 3', 'What is this?', now(), null, now(), null, true, 0);
+  
+INSERT INTO thread_polling_detail(id, thread_polling_detail_code, thread_polling_header_id, polling_choice, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('4eba8148-097c-4709-aeb9-39fb19e2df35', uuid_generate_v4(), 'f4885546-8a14-4ee6-97f0-7556af36ee30', 'A', now(), null, now(), null, true, 0), 
+	('6cb977b2-ab07-4385-8461-be2523250254', uuid_generate_v4(), 'f4885546-8a14-4ee6-97f0-7556af36ee30', 'B', now(), null, now(), null, true, 0), 
+	('b8650a5b-20bb-4807-983f-a98a4c797eae', uuid_generate_v4(), 'f4885546-8a14-4ee6-97f0-7556af36ee30', 'C', now(), null, now(), null, true, 0), 
+	('1e362ab6-561d-41a5-aba9-8cb3287b6998', uuid_generate_v4(), '6f7d8a30-5b56-40b5-b2fa-48cbf02f5c15', 'A', now(), null, now(), null, true, 0), 
+	('11d76044-6cb6-44e0-a095-bb9d400bb375', uuid_generate_v4(), '6f7d8a30-5b56-40b5-b2fa-48cbf02f5c15', 'B', now(), null, now(), null, true, 0), 
+	('b08d0498-d1b0-442d-841f-74013184db46', uuid_generate_v4(), 'a2a50dc6-5e76-4b4b-a932-6856d8656aff', 'A', now(), null, now(), null, true, 0), 
+	('2d27bff8-ec80-4a63-99f4-fd2bed5132c1', uuid_generate_v4(), 'a2a50dc6-5e76-4b4b-a932-6856d8656aff', 'B', now(), null, now(), null, true, 0);
 
+INSERT INTO thread_polling_like(id, thread_polling_like_code, user_id, thread_polling_header_id, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('8d3525fb-686e-4304-a4c9-41b90993e6dc', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb8', 'f4885546-8a14-4ee6-97f0-7556af36ee30', now(), null, now(), null, true, 0),
+	('08d7a6c4-fee6-4e80-909a-7ef4fa5de5fe', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb9', 'f4885546-8a14-4ee6-97f0-7556af36ee30', now(), null, now(), null, true, 0),
+	('c89f1203-f442-4dbc-80a4-234330c6908d', uuid_generate_v4(), '2c55391b-2c58-4beb-a97a-f8482991efb8', '6f7d8a30-5b56-40b5-b2fa-48cbf02f5c15', now(), null, now(), null, true, 0);
+
+
+INSERT INTO event_type(id, event_type_code, "type", created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('479d09f9-dc50-4d57-a1db-f115cdfa3cb8', uuid_generate_v4(), 'Event', now(), null, now(), null, true, 0),
+	('881383c9-75c1-408a-bde0-0fe3eae98798', uuid_generate_v4(), 'Course', now(), null, now(), null, true, 0);
+
+INSERT INTO event_header (id, event_header_code, event_type_id, file_id, title, user_id, created_at,created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('8c694cb8-1114-4888-b93b-cd48b886f161', uuid_generate_v4(), '479d09f9-dc50-4d57-a1db-f115cdfa3cb8', null, 'Test Event 1', '2c55391b-2c58-4beb-a97a-f8482991efb8', now(), null, now(), null, true, 0),
+	('e4547b9b-e8f2-40d3-89bc-842f3c736a12', uuid_generate_v4(), '881383c9-75c1-408a-bde0-0fe3eae98798', null, 'Test Event 2', '2c55391b-2c58-4beb-a97a-f8482991efb9', now(), null, now(), null, true, 0);
 	
-   
+INSERT INTO event_detail (id, event_detail_code, event_header_id, price, start_date, end_date, provider, locations, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES 
+	('c0ea2ab9-909c-4dfc-a233-520fdb596f58', uuid_generate_v4(),  '8c694cb8-1114-4888-b93b-cd48b886f161', 5000, now(), now(), 'User', 'Jakarta', now(), null, now(), null, true, 0),
+	('4123db67-bbbb-4d33-8702-e0ade3f6b983', uuid_generate_v4(),  'e4547b9b-e8f2-40d3-89bc-842f3c736a12', 15000, now(), now(), 'User', 'Jakarta', now(), null, now(), null, true, 0);
+	
+	
 -- Testing query here
 SELECT COUNT(id) FROM roles;
 
