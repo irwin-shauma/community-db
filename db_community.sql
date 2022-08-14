@@ -147,7 +147,7 @@ CREATE TABLE payment (
     payment_code varchar(36),
     file_id varchar(36),
     user_id varchar(36),
-    is_approve varchar(36),
+    is_approve boolean,
     created_at timestamp,
     created_by varchar(36),
     updated_at timestamp,
@@ -204,6 +204,10 @@ CREATE TABLE thread_details (
 CREATE TABLE thread_polling_header (
     id varchar(36),
     thread_polling_header_code varchar(36),
+	-- New    
+    user_id varchar(36),
+    duration date,
+    
     title_polling text,
     content_polling text,
     polling_question text,
@@ -481,7 +485,6 @@ ALTER TABLE thread_types
 ALTER TABLE users
     ADD CONSTRAINT user_code_bk UNIQUE (users_code);
 
--- New 
 ALTER TABLE users
     ADD CONSTRAINT user_email_bk UNIQUE(email);
 
@@ -509,10 +512,6 @@ ALTER TABLE event_header
 ALTER TABLE article_header
     ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
 
-	-- Deleted
---ALTER TABLE thread_details
---    ADD CONSTRAINT file_fk FOREIGN KEY (file_id) REFERENCES file(id);
-
 ALTER TABLE event_detail
     ADD CONSTRAINT event_header_fk FOREIGN KEY (event_header_id) REFERENCES event_header(id);
    
@@ -522,7 +521,6 @@ ALTER TABLE event_payment_history
 ALTER TABLE event_payment_history
 	ADD CONSTRAINT event_header_fk FOREIGN KEY(event_header_id) REFERENCES event_header(id);
 
--- New
 AlTER TABLE event_payment_history
 	ADD CONSTRAINT payment_fk FOREIGN KEY(payment_id) REFERENCES payment(id);
 
@@ -552,6 +550,9 @@ ALTER TABLE bookmark
 
 ALTER TABLE thread_like
     ADD CONSTRAINT thread_fk FOREIGN KEY (thread_id) REFERENCES thread_headers(id);
+   
+ALTER TABLE thread_polling_header
+	ADD CONSTRAINT user_fk FOREIGN KEY (user_id) REFERENCES users(id);
 
 ALTER TABLE thread_polling_detail
     ADD CONSTRAINT thread_polling_header_fk FOREIGN KEY (thread_polling_header_id) REFERENCES thread_polling_header(id);
@@ -719,8 +720,24 @@ INSERT INTO event_detail (id, event_detail_code, event_header_id, price, start_d
 VALUES 
 	('c0ea2ab9-909c-4dfc-a233-520fdb596f58', uuid_generate_v4(),  '8c694cb8-1114-4888-b93b-cd48b886f161', 5000, now(), now(), 'User', 'Jakarta', now(), null, now(), null, true, 0),
 	('4123db67-bbbb-4d33-8702-e0ade3f6b983', uuid_generate_v4(),  'e4547b9b-e8f2-40d3-89bc-842f3c736a12', 15000, now(), now(), 'User', 'Jakarta', now(), null, now(), null, true, 0);
-	
-	
+
+INSERT INTO payment(id, payment_code, file_id, user_id, is_approve, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('f0e53a4a-7ed7-4329-9d97-e62ef5e5d867', uuid_generate_v4(), null, '2c55391b-2c58-4beb-a97a-f8482991efb7', 'true', now(), null, now(), null, true, 0),
+	('da0b9fde-7f86-4c2d-857f-a6b4ca27d09b', uuid_generate_v4(), null, '2c55391b-2c58-4beb-a97a-f8482991efb8', 'true', now(), null, now(), null, true, 0),
+	('36293791-f1e5-43d8-8661-765e47b313ac', uuid_generate_v4(), null, '2c55391b-2c58-4beb-a97a-f8482991efb9', 'true', now(), null, now(), null, true, 0),
+	('6bb2bd2c-fa83-4eb1-a84d-7909555d4edb', uuid_generate_v4(), null, '2c55391b-2c58-4beb-a97a-f8482991efb7', 'false', now(), null, now(), null, true, 0);
+
+INSERT INTO premium_payment_history (id, premium_payment_history_code, payment_id, user_id, premium_type_id, trx_no, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('004a4340-b27e-4882-a9ee-4c01b34ec84f',uuid_generate_v4(), '6bb2bd2c-fa83-4eb1-a84d-7909555d4edb', '2c55391b-2c58-4beb-a97a-f8482991efb7', 'b5678fcd-0d4b-43f1-9119-f01c36998ba8',  '001', now(), null, now(), null, true, 0); 
+
+INSERT INTO event_payment_history (id, event_payment_history_code, payment_id, user_id, event_header_id, trx_no, created_at, created_by, updated_at, updated_by, is_active, "version")
+VALUES
+	('4b68c369-b3e9-4d93-9e18-3d6338eb39b6',uuid_generate_v4(),'f0e53a4a-7ed7-4329-9d97-e62ef5e5d867', '2c55391b-2c58-4beb-a97a-f8482991efb7', '8c694cb8-1114-4888-b93b-cd48b886f161', 'E-001', now(), null, now(), null, true, 0 ),
+	('75155a48-c3a8-450c-a50b-cddd4f1c21ac',uuid_generate_v4(),'da0b9fde-7f86-4c2d-857f-a6b4ca27d09b', '2c55391b-2c58-4beb-a97a-f8482991efb8', '8c694cb8-1114-4888-b93b-cd48b886f161', 'E-002', now(), null, now(), null, true, 0 ),
+	('e6988bdf-a0f2-43ab-8e05-ba57d1141586',uuid_generate_v4(),'36293791-f1e5-43d8-8661-765e47b313ac', '2c55391b-2c58-4beb-a97a-f8482991efb9', '8c694cb8-1114-4888-b93b-cd48b886f161', 'E-003', now(), null, now(), null, true, 0 );
+
 -- Testing query here
 SELECT COUNT(id) FROM roles;
 
@@ -731,6 +748,20 @@ VALUES
 SELECT u.id, u.email, u.role_id FROM users u INNER JOIN roles r ON u.role_id = r.id WHERE email = 'adnim';
 
 SELECT COUNT(id) FROM users;
+
+ SELECT pf.full_name AS fullName, eph.trx_no AS trxNo, 
+ eh.title AS title, et.type AS type,
+ ed.price AS price, pm.created_at AS date
+ FROM payment pm 
+ JOIN users u ON u.id = pm.user_id 
+ JOIN profile pf ON pf.id = u.profile_id 
+ JOIN event_payment_history eph ON eph.payment_id = pm.id 
+ JOIN event_header eh ON eh.id = eph.event_header_id 
+ JOIN event_type et ON et.id = eh.event_type_id 
+ JOIN event_detail ed ON ed.event_header_id = eh.id 
+ WHERE pm.user_id = '2c55391b-2c58-4beb-a97a-f8482991efb7';
+
+SELECT * FROM thread_polling_header;
 
 
 
